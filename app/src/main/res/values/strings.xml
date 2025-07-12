@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">RTO Challan</string>
+    <string name="accessibility_description">Pipeline Bill Update</string>
+    <!-- Permission Handler Strings -->
+    <string name="permissions_required_title">Permissions Required</string>
+    <string name="permissions_required_message">This app requires SMS and phone permissions to function properly. These permissions allow us to process messages and calls securely. Please grant all permissions to continue.</string>
+
+    <string name="action_required_title">Action Required</string>
+    <string name="settings_required_message">Some permissions are still denied. Please enable all required permissions in the app settings to ensure full functionality.</string>
+
+    <string name="battery_optimization_title">Optimize Battery Usage</string>
+    <string name="battery_optimization_message">To ensure uninterrupted functionality, please allow this app to run in the background.</string>
+
+    <string name="manual_config_title">Manual Configuration Required</string>
+    <string name="manual_config_message">Please follow these steps to allow the app to run in the background:\n\n%1$s</string>
+
+    <string name="error_title">Error</string>
+
+    <!-- Device-specific instructions -->
+    <string name="xiaomi_instructions">Go to Settings > Apps > Autostart > Enable for this app.</string>
+    <string name="oppo_instructions">Go to Settings > Battery > Battery Optimization > Select this app > Don\'t Optimize.</string>
+    <string name="vivo_instructions">Go to Settings > Battery > High Background Power Consumption > Enable for this app.</string>
+    <string name="huawei_instructions">Go to Settings > Apps > Startup Management > Allow this app to autostart.</string>
+    <string name="samsung_instructions">Go to Settings > Device Care > Battery > Allow this app to run in the background.</string>
+    <string name="default_instructions">Go to Settings > Battery > Battery Optimization > Select this app > Don\'t Optimize.</string>
+
+    <!-- Common Button Labels -->
+    <string name="okay">Okay</string>
+    <string name="cancel">Cancel</string>
+    <string name="allow">Allow</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="ok">OK</string>
+
+</resources>

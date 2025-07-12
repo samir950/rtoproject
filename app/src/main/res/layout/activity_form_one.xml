@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#F1F1F1"
+    tools:context=".ui.FormOneActivity"
+    android:padding="12dp">
+
+    <!-- Header with Government Logo and Title -->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/gvlg"
+        android:contentDescription="Government of India Emblem"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"/>
+
+    <TextView
+        android:id="@+id/tv_app_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Government Payment Portal"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#003087"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintTop_toTopOf="@id/logo"
+        app:layout_constraintBottom_toBottomOf="@id/logo"
+        app:layout_constraintStart_toEndOf="@id/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"/>
+
+    <!-- Tricolor Divider -->
+    <View
+        android:id="@+id/v_divider"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="@drawable/tricolor_gradient"
+        app:layout_constraintTop_toBottomOf="@id/logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Payment Description -->
+    <TextView
+        android:id="@+id/tv_payment_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Pay securely for government services via net banking."
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:fontFamily="sans-serif"
+        app:layout_constraintTop_toBottomOf="@id/v_divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="8dp"
+        android:lineSpacingExtra="4dp"/>
+
+    <!-- Card Container for Pay Now Button -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_payment_desc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="@android:color/white"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="12dp">
+
+        <!-- Pay Now Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPayNow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="Pay Now"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:padding="14dp"
+            app:cornerRadius="8dp"
+            app:background="@drawable/button_border"
+            app:iconGravity="start"
+            app:iconPadding="8dp"
+            app:iconTint="@android:color/white"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Certifications Section -->
+    <TextView
+        android:id="@+id/tv_certifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Certified and Secure"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#003087"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintTop_toBottomOf="@id/card_container"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_certifications"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tv_certifications"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="12dp">
+
+        <!-- NPCI Certification -->
+        <ImageView
+            android:id="@+id/iv_npci"
+            android:layout_width="56dp"
+            android:layout_height="36dp"
+            android:src="@drawable/nptygyci"
+            android:contentDescription="NPCI Certified"
+            android:layout_marginEnd="10dp"/>
+
+        <!-- ISO 27001 Certification -->
+        <ImageView
+            android:id="@+id/iv_iso"
+            android:layout_width="56dp"
+            android:layout_height="36dp"
+            android:src="@drawable/isoytf"
+            android:contentDescription="ISO 27001 Certified"
+            android:layout_marginEnd="10dp"/>
+
+        <!-- DigiLocker Integration -->
+        <ImageView
+            android:id="@+id/iv_digilocker"
+            android:layout_width="56dp"
+            android:layout_height="36dp"
+            android:src="@drawable/dgidty"
+            android:contentDescription="DigiLocker Integrated"/>
+    </LinearLayout>
+
+    <!-- Security Assurance Text -->
+    <TextView
+        android:id="@+id/tv_security_assurance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Transactions are encrypted and RBI-compliant."
+        android:textSize="12sp"
+        android:textColor="#555555"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/ll_certifications"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="8dp"/>
+
+    <!-- Footer with Contact Info -->
+    <TextView
+        android:id="@+id/tv_footer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Contact: support@govpay.in | 1800-123-4567\nMinistry of Digital Services"
+        android:textSize="12sp"
+        android:textColor="#555555"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="12dp"
+        android:layout_marginHorizontal="8dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

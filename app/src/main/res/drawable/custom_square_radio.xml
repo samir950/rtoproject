@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Checked state -->
+    <item android:state_checked="true">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <size android:width="24dp" android:height="24dp" />
+                    <stroke android:width="2dp" android:color="#FF69B4" /> <!-- Pink border -->
+                    <solid android:color="@android:color/transparent" />
+                    <corners android:radius="2dp" /> <!-- Slight radius for smooth edges -->
+                </shape>
+            </item>
+            <item android:gravity="center">
+                <shape android:shape="rectangle">
+                    <size android:width="16dp" android:height="16dp" />
+                    <solid android:color="#FF69B4" /> <!-- Pink fill for checked state -->
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    <!-- Unchecked state -->
+    <item android:state_checked="false">
+        <shape android:shape="rectangle">
+            <size android:width="24dp" android:height="24dp" />
+            <stroke android:width="2dp" android:color="#FF69B4" /> <!-- Pink border -->
+            <solid android:color="@android:color/transparent" />
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
+</selector>

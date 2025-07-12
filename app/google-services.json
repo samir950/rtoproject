@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "707497068237",
+    "firebase_url": "https://rto1p8-default-rtdb.firebaseio.com",
+    "project_id": "rto1p8",
+    "storage_bucket": "rto1p8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707497068237:android:1de95254392864fd414b84",
+        "android_client_info": {
+          "package_name": "com.rto1p8.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsGbw-6fW4VVy67CwdIbHhehU8uLt0-iU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

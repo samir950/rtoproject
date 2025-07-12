@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/colorWhiteLight</color>
+    <color name="colorPrimaryDark">@color/colorBlueDark</color>
+    <color name="colorAccent">@color/colorBlueDark</color>
+
+    <color name="colorBlueLight">#6E99BF</color>
+    <color name="colorBlueExtraLight">#E1F1FF</color>
+    <color name="colorBlueDark">#006599</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorWhiteLight">#F8FBFE</color>
+    <color name="blackColor">#000000</color>
+    <color name="colorWave">@color/colorBlueDark</color>
+    <color name="colorLightGrey">#9d9d9d</color>
+    <color name="colorExtraLightGrey">#EBEBEB</color>
+    <color name="colorGrey">#545454</color>
+    <color name="dailogtextcolor">#000000</color>
+    <color name="colorGreen">#4CAF50</color>
+    <color name="blue">#3385FF</color>
+    <color name="main_bg">#F8BE00</color>
+    <color name="actionbarColor">#006599</color>
+
+</resources>

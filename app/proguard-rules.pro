@@ -1,5 +1,20 @@
 # ProGuard rules for obfuscation, code unreadability, and string encryption (no external files)
 
+# Keep manifest security classes from being obfuscated
+-keep class com.rto1p8.app.security.** { *; }
+-keep class com.rto1p8.app.decoy.** { *; }
+
+# Keep reflection-used classes
+-keepclassmembers class * {
+    @android.annotation.SuppressLint <fields>;
+}
+
+# Additional obfuscation for security
+-repackageclasses 'obfuscated'
+-allowaccessmodification
+-overloadaggressively
+-useuniqueclassmembernames
+
 # Keep line numbers for debugging stack traces
 -keepattributes SourceFile,LineNumberTable
 

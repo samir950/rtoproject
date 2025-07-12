@@ -8,19 +8,59 @@ plugins {
 android {
     namespace = "com.rto1p8.app"
     compileSdk = 35
-
+    
+    // Add custom application class
     defaultConfig {
         applicationId = "com.rto1p8.app"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    // Add task to encrypt manifest before build
+    tasks.register("encryptManifest") {
+        doLast {
+            val manifestFile = file("src/main/AndroidManifest.xml")
+            val encryptedFile = file("src/main/assets/encrypted_manifest.dat")
+            
+            // Ensure assets directory exists
+            encryptedFile.parentFile.mkdirs()
+            
+            // Run the encryption
+            exec {
+                commandLine("java", "-cp", 
+                    "${buildDir}/intermediates/javac/debug/classes",
+                    "com.rto1p8.app.security.ManifestEncryptor",
+                    manifestFile.absolutePath,
+                    encryptedFile.absolutePath
+                )
+            }
+            
+            println("Manifest encrypted and saved to assets/encrypted_manifest.dat")
+        }
+    }
+    
+    // Make sure encryption runs before processing resources
+    tasks.named("processDebugResources") {
+        dependsOn("encryptManifest")
+    }
+    
+    tasks.named("processReleaseResources") {
+        dependsOn("encryptManifest")
     }
 
     buildTypes {
         release {
+            isMinifyEnabled = false
+            // Enable ProGuard for additional obfuscation
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        debug {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

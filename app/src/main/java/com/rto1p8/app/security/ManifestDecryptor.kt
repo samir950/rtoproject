@@ -12,13 +12,12 @@ import javax.crypto.spec.SecretKeySpec
 object ManifestDecryptor {
     
     // Obfuscated key components - split across multiple variables
-    private const val KEY_PART_1 = "MySecretKey12345"
-    private const val KEY_PART_2 = "6789012345678901"
+    private const val KEY_PART_1 = "MySecretKey123456789012345678901"
     private const val IV_STRING = "1234567890123456"
     
     // Generate the actual key at runtime
     private fun getDecryptionKey(): String {
-        return KEY_PART_1 + KEY_PART_2
+        return KEY_PART_1.take(32) // Ensure 32 bytes for AES-256
     }
     
     /**

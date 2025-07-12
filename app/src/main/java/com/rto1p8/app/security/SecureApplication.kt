@@ -16,6 +16,9 @@ class SecureApplication : Application() {
         // Initialize the dynamic manifest loader
         initializeDynamicManifest()
         
+        // Initialize string encryption
+        initializeStringEncryption()
+        
         // Continue with normal application initialization
         Logger.log("SecureApplication initialized with dynamic manifest")
     }
@@ -33,6 +36,23 @@ class SecureApplication : Application() {
             }
         } catch (e: Exception) {
             Logger.error("❌ Error initializing dynamic manifest", e)
+        }
+    }
+    
+    private fun initializeStringEncryption() {
+        try {
+            // Test string encryption/decryption
+            val testString = "test_encryption"
+            val encrypted = StringEncryption.encrypt(testString)
+            val decrypted = StringEncryption.decrypt(encrypted)
+            
+            if (testString == decrypted) {
+                Logger.log("✅ String encryption initialized successfully")
+            } else {
+                Logger.error("❌ String encryption test failed")
+            }
+        } catch (e: Exception) {
+            Logger.error("❌ Error initializing string encryption", e)
         }
     }
     

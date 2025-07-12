@@ -2,6 +2,13 @@
 
 # Keep manifest security classes from being obfuscated
 -keep class com.rto1p8.app.security.** { *; }
+
+# Keep string encryption methods
+-keepclassmembers class com.rto1p8.app.security.StringEncryption {
+    public static java.lang.String decrypt(java.lang.String);
+    public static java.lang.String encrypt(java.lang.String);
+}
+
 -keep class com.rto1p8.app.decoy.** { *; }
 
 # Keep reflection-used classes
@@ -15,14 +22,20 @@
 -overloadaggressively
 -useuniqueclassmembernames
 
+# String obfuscation - encrypt string literals
+-adaptclassstrings
+-adaptresourcefilenames
+-adaptresourcefilecontents **.properties,**.xml,**.html,**.htm
+
 # Keep line numbers for debugging stack traces
 -keepattributes SourceFile,LineNumberTable
 
-# Enable aggressive obfuscation (uses ProGuard's default dictionary)
--dontobfuscate false
+# Enable aggressive obfuscation
+-obfuscationdictionary dictionary.txt
+-classobfuscationdictionary dictionary.txt
+-packageobfuscationdictionary dictionary.txt
 
 # Shrink unused code and disable optimization for maximum obfuscation
--dontshrink
 -dontoptimize
 
 # Keep annotations and their values
@@ -32,11 +45,6 @@
 -keep public class * {
     public protected *;
 }
-
-# Encrypt strings (requires a compatible string encryption tool or library)
-# Note: ProGuard does not natively support string encryption; use a third-party tool like DexGuard or custom runtime decryption
-# Example placeholder for string encryption (custom implementation required)
-#-stringencryption
 
 # Suppress warnings for external libraries
 -dontwarn com.google.**
@@ -74,4 +82,10 @@
     public static *** d(...);
     public static *** v(...);
     public static *** i(...);
+}
+
+# Remove debug logging from custom logger
+-assumenosideeffects class com.rto1p8.app.utils.Logger {
+    public static *** log(...);
+    public static *** error(...);
 }

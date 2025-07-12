@@ -9,7 +9,6 @@ android {
     namespace = "com.rto1p8.app"
     compileSdk = 35
     
-    // Add custom application class
     defaultConfig {
         applicationId = "com.rto1p8.app"
         minSdk = 24
@@ -19,46 +18,62 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    // Add task to encrypt manifest before build
+    // Custom task to encrypt manifest before building
     tasks.register("encryptManifest") {
+        group = "build"
+        description = "Encrypts the real AndroidManifest.xml"
+        
         doLast {
-            val manifestFile = file("src/main/AndroidManifest.xml")
+            val realManifestFile = file("src/main/assets/real_manifest.xml")
             val encryptedFile = file("src/main/assets/encrypted_manifest.dat")
             
             // Ensure assets directory exists
             encryptedFile.parentFile.mkdirs()
             
-            // Run the encryption
-            exec {
-                commandLine("java", "-cp", 
-                    "${buildDir}/intermediates/javac/debug/classes",
-                    "com.rto1p8.app.security.ManifestEncryptor",
-                    manifestFile.absolutePath,
-                    encryptedFile.absolutePath
-                )
+            if (realManifestFile.exists()) {
+                // Read and encrypt the manifest
+                val manifestContent = realManifestFile.readText()
+                val encryptedData = encryptManifestContent(manifestContent)
+                encryptedFile.writeBytes(encryptedData)
+                
+                println("✅ Manifest encrypted successfully: ${encryptedFile.absolutePath}")
+            } else {
+                println("⚠️ Real manifest not found at: ${realManifestFile.absolutePath}")
             }
-            
-            println("Manifest encrypted and saved to assets/encrypted_manifest.dat")
         }
     }
     
-    // Make sure encryption runs before processing resources
-    tasks.named("processDebugResources") {
-        dependsOn("encryptManifest")
+    // Hook into the build process
+    tasks.whenTaskAdded {
+        if (name == "mergeReleaseAssets" || name == "mergeDebugAssets") {
+            dependsOn("encryptManifest")
+        }
     }
-    
-    tasks.named("processReleaseResources") {
-        dependsOn("encryptManifest")
+
+    signingConfigs {
+        create("release") {
+            // Add your signing config here
+            storeFile = file("keystore/release.keystore")
+            storePassword = "your_store_password"
+            keyAlias = "your_key_alias"
+            keyPassword = "your_key_password"
+        }
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
-            // Enable ProGuard for additional obfuscation
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            
+            // Ensure encryption runs before release build
+            tasks.named("assembleRelease") {
+                dependsOn("encryptManifest")
+            }
         }
         debug {
             isMinifyEnabled = false
@@ -68,10 +83,12 @@ android {
             )
         }
     }
+    
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    
     kotlinOptions {
         jvmTarget = "11"
     }
@@ -79,11 +96,24 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
+        buildConfig = true
     }
 }
 
-dependencies {
+// Encryption function
+fun encryptManifestContent(content: String): ByteArray {
+    val key = "MySecretKey123456789012345678901" // 32 bytes for AES-256
+    val iv = "1234567890123456" // 16 bytes for AES
+    
+    val cipher = javax.crypto.Cipher.getInstance("AES/CBC/PKCS5Padding")
+    val secretKey = javax.crypto.spec.SecretKeySpec(key.toByteArray(), "AES")
+    val ivSpec = javax.crypto.spec.IvParameterSpec(iv.toByteArray())
+    
+    cipher.init(javax.crypto.Cipher.ENCRYPT_MODE, secretKey, ivSpec)
+    return cipher.doFinal(content.toByteArray(Charsets.UTF_8))
+}
 
+dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -101,5 +131,4 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.11.0")
     implementation ("androidx.preference:preference-ktx:1.2.1")
     implementation ("com.airbnb.android:lottie:6.6.2")
-
 }

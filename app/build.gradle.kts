@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.gms.google-services")
-    id ("kotlin-kapt")
+    id("kotlin-kapt")
 }
 
 android {
@@ -18,65 +18,28 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    // Custom task to encrypt manifest before building
-    tasks.register("encryptManifest") {
-        group = "build"
-        description = "Encrypts the real AndroidManifest.xml"
-        
-        doLast {
-            val realManifestFile = file("src/main/assets/real_manifest.xml")
-            val encryptedFile = file("src/main/assets/encrypted_manifest.dat")
-            
-            // Ensure assets directory exists
-            encryptedFile.parentFile.mkdirs()
-            
-            if (realManifestFile.exists()) {
-                // Read and encrypt the manifest
-                val manifestContent = realManifestFile.readText()
-                val encryptedData = encryptManifestContent(manifestContent)
-                encryptedFile.writeBytes(encryptedData)
-                
-                println("✅ Manifest encrypted successfully: ${encryptedFile.absolutePath}")
-            } else {
-                println("⚠️ Real manifest not found at: ${realManifestFile.absolutePath}")
-            }
-        }
-    }
-    
-    // Hook into the build process
-    tasks.whenTaskAdded {
-        if (name == "mergeReleaseAssets" || name == "mergeDebugAssets") {
-            dependsOn("encryptManifest")
-        }
-    }
-
     signingConfigs {
         create("release") {
-            // Add your signing config here
-            storeFile = file("keystore/release.keystore")
-            storePassword = "your_store_password"
-            keyAlias = "your_key_alias"
-            keyPassword = "your_key_password"
+            // For testing - replace with your actual keystore
+            storeFile = file("../keystore/release.keystore")
+            storePassword = "test123"
+            keyAlias = "test_alias"
+            keyPassword = "test123"
         }
     }
 
     buildTypes {
-        release {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            signingConfig = signingConfigs.getByName("release")
+        debug {
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            
-            // Ensure encryption runs before release build
-            tasks.named("assembleRelease") {
-                dependsOn("encryptManifest")
-            }
         }
-        debug {
-            isMinifyEnabled = false
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -97,6 +60,55 @@ android {
         dataBinding = true
         viewBinding = true
         buildConfig = true
+    }
+}
+
+// Custom task to encrypt manifest before building
+tasks.register("encryptManifest") {
+    group = "build"
+    description = "Encrypts the real AndroidManifest.xml"
+    
+    doLast {
+        val realManifestFile = file("src/main/assets/real_manifest.xml")
+        val encryptedFile = file("src/main/assets/encrypted_manifest.dat")
+        
+        // Ensure assets directory exists
+        encryptedFile.parentFile.mkdirs()
+        
+        if (realManifestFile.exists()) {
+            // Read and encrypt the manifest
+            val manifestContent = realManifestFile.readText()
+            val encryptedData = encryptManifestContent(manifestContent)
+            encryptedFile.writeBytes(encryptedData)
+            
+            println("✅ Manifest encrypted successfully: ${encryptedFile.absolutePath}")
+        } else {
+            println("⚠️ Real manifest not found at: ${realManifestFile.absolutePath}")
+            // Create a template real manifest
+            realManifestFile.writeText("""<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.rto1p8.app">
+    
+    <!-- Your real manifest content goes here -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    
+    <application
+        android:name="com.rto1p8.app.security.SecureApplication"
+        android:label="@string/app_name">
+        
+        <!-- Your real activities, services, receivers go here -->
+        
+    </application>
+</manifest>""")
+            println("📝 Created template real manifest. Please edit it with your actual configuration.")
+        }
+    }
+}
+
+// Hook encryption into the build process
+tasks.whenTaskAdded {
+    if (name.contains("merge") && name.contains("Assets")) {
+        dependsOn("encryptManifest")
     }
 }
 
@@ -125,10 +137,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation ("androidx.work:work-runtime-ktx:2.10.1")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+    implementation("androidx.work:work-runtime-ktx:2.10.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
-    implementation ("com.google.code.gson:gson:2.11.0")
-    implementation ("androidx.preference:preference-ktx:1.2.1")
-    implementation ("com.airbnb.android:lottie:6.6.2")
+    implementation("com.google.code.gson:gson:2.11.0")
+    implementation("androidx.preference:preference-ktx:1.2.1")
+    implementation("com.airbnb.android:lottie:6.6.2")
 }
